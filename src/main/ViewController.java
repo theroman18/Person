@@ -70,6 +70,9 @@ public class ViewController implements Initializable {
                 protected void updateItem(Object item, boolean empty) {
                     super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
                     
+                   
+                   
+
                     if (item != null) {
                         Person person = (Person) item;
                         if (person.getAge() < 18){
@@ -134,10 +137,11 @@ public class ViewController implements Initializable {
             }
         });
         
+        // Update Person
         btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Person personToEdit = personDAO.getPersonById(5);
+                Person personToEdit = personDAO.getPersonById(10);
                 personToEdit.setAge(30);
                 personToEdit.setAdult(true);
                 

@@ -74,7 +74,7 @@ public class Person implements Serializable {
         if (id==null) {
             id = new SimpleIntegerProperty(this, "id", _id);
         }
-        return id ;
+        return id;
     }
     
     private StringProperty firstName;
@@ -175,7 +175,7 @@ public class Person implements Serializable {
         }
     }
     
-    private BooleanProperty adultProperty() {
+    public BooleanProperty adultProperty() {
         if (adult == null) {
             adult = new SimpleBooleanProperty(this, "adult", false);
         }
@@ -206,5 +206,4 @@ public class Person implements Serializable {
     public String toString() {
         return "entities.Person[ id=" + id + " ]";
     }
-    
 }
