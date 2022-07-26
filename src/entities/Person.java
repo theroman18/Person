@@ -1,11 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
 import java.io.Serializable;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Roman-Desktop
  */
 @Entity
+@Access(AccessType.PROPERTY)
 @Table(name = "Person")
 @XmlRootElement
 @NamedQueries({
@@ -30,73 +34,153 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Person.findByAge", query = "SELECT p FROM Person p WHERE p.age = :age")
     , @NamedQuery(name = "Person.findByAdult", query = "SELECT p FROM Person p WHERE p.adult = :adult")})
 public class Person implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "First_Name")
-    private String firstName;
-    @Column(name = "Last_Name")
-    private String lastName;
-    @Column(name = "Age")
-    private Integer age;
-    @Basic(optional = false)
-    @Column(name = "Adult")
-    private boolean adult;
-
+    
     public Person() {
     }
 
     public Person(Integer id) {
-        this.id = id;
+        setId(id);
     }
 
     public Person(Integer id, boolean adult) {
-        this.id = id;
-        this.adult = adult;
+        setId(id);
+        setAdult(adult);
+    }
+    
+    private IntegerProperty id ;
+    private Integer _id;
+    @Id
+    @Basic(optional = false)
+    @Column(name = "id")
+    public int getId() {
+        if (id == null) {
+            return _id;
+        } else {
+            return id.get();
+        }
     }
 
-    public Integer getId() {
-        return id;
+    public void setId(int id) {
+        if (this.id == null) {
+            _id = id;
+        } else {
+            this.id.set(id);
+        }
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    
+    public IntegerProperty idProperty() {
+        if (id==null) {
+            id = new SimpleIntegerProperty(this, "id", _id);
+        }
+        return id ;
     }
-
+    
+    private StringProperty firstName;
+    private String _firstName;
+    @Column(name = "First_Name")
     public String getFirstName() {
-        return firstName;
+        if (firstName == null) {
+            return _firstName;
+        } else {
+            return firstName.get();
+        }
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (this.firstName == null) {
+            _firstName = firstName;
+        } else {
+            this.firstName.set(firstName);
+        }
     }
-
+    
+    public StringProperty firstNameProperty() {
+        if (firstName == null) {
+            firstName = new SimpleStringProperty(this, "firstName");
+        }
+        return firstName;
+    }    
+    
+    private StringProperty lastName;
+    private String _lastName;
+    @Column(name = "Last_Name")
     public String getLastName() {
-        return lastName;
+        if (lastName == null) {
+            return _lastName;
+        } else {
+            return lastName.get();
+        }
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if (this.lastName == null) {
+            _lastName = lastName;
+        } else {
+            this.lastName.set(lastName);
+        }
     }
-
+    
+    public StringProperty lastNameProperty() {
+        if (lastName == null) {
+            lastName = new SimpleStringProperty(this, "firstName");
+        }
+        return lastName;
+    }       
+    
+    private IntegerProperty age;
+    private Integer _age;
+    @Column(name = "Age")
     public Integer getAge() {
-        return age;
+        if (age == null) {
+            return _age;
+        } else {
+            return age.get();
+        }
     }
 
     public void setAge(Integer age) {
-        this.age = age;
+        if (this.age == null) {
+            _age = age;
+        } else {
+            this.age.set(age);
+        }
     }
-
+    
+    public IntegerProperty ageProperty() {
+        if (age == null) {
+            age = new SimpleIntegerProperty(this, "age", _age);
+        }
+        return age;
+    }    
+    
+    private BooleanProperty adult;
+    private boolean _adult;
+    @Basic(optional = false)
+    @Column(name = "Adult")
     public boolean getAdult() {
-        return adult;
+        if (adult == null) {
+            return _adult;
+        } else {
+            return adult.get();
+        }
     }
-
+    
     public void setAdult(boolean adult) {
-        this.adult = adult;
+        if (this.adult == null) {
+            _adult = adult;
+        } else {
+            this.adult.set(adult);
+        }
     }
+    
+    private BooleanProperty adultProperty() {
+        if (adult == null) {
+            adult = new SimpleBooleanProperty(this, "adult", false);
+        }
+        return adult;
+    }    
 
     @Override
     public int hashCode() {
