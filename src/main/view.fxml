@@ -21,7 +21,7 @@
                         <Label text="First Name" />
                         <Label text="Last Name" />
                         <Label text="Age" />
-                        <Label text="Adult" />
+                        <Label text="Employed" />
                         <Label text="Filter by First Name" />
                      </children>
                      <HBox.margin>
@@ -33,7 +33,7 @@
                         <TextField fx:id="textFieldFirstName" />
                         <TextField fx:id="textFieldLastName" />
                         <TextField fx:id="textFieldAge" />
-                        <ChoiceBox fx:id="choiceBoxAdult" prefWidth="150.0" />
+                        <ChoiceBox fx:id="choiceBoxEmployed" prefWidth="150.0" />
                         <TextField fx:id="textFieldFilter" />
                      </children>
                   </VBox>

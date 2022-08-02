@@ -46,7 +46,7 @@ public class ViewController implements Initializable {
     @FXML
     private TextField textFieldFilter;
     @FXML
-    private ChoiceBox<String> choiceBoxAdult;
+    private ChoiceBox<String> choiceBoxEmployed;
     @FXML
     private Button btnAdd;
     @FXML
@@ -103,11 +103,11 @@ public class ViewController implements Initializable {
         // Add Person
         btnAdd.setOnAction((ActionEvent event) -> {
             if (!textFieldFirstName.getText().trim().isEmpty() && !textFieldLastName.getText().trim().isEmpty() && !textFieldAge.getText().trim().isEmpty()) {
-                Person newPerson = new Person(getID());
+                Person newPerson = new Person();
                 newPerson.setFirstName(textFieldFirstName.getText());
                 newPerson.setLastName(textFieldLastName.getText());
                 newPerson.setAge(Integer.parseInt(textFieldAge.getText()));
-                newPerson.setAdult(true);
+                newPerson.setEmployed(processStringToBool(choiceBoxEmployed.getSelectionModel().getSelectedItem()));
                 try {
                     personDAO.addPerson(newPerson);
                 } catch (Exception ex) {
@@ -116,7 +116,7 @@ public class ViewController implements Initializable {
                 textFieldFirstName.clear();
                 textFieldLastName.clear();
                 textFieldAge.clear();
-                choiceBoxAdult.setValue("No");
+                choiceBoxEmployed.setValue("No");
                 personObservableList.add(newPerson);
             }
         });
@@ -139,7 +139,7 @@ public class ViewController implements Initializable {
             public void handle(ActionEvent event) {
                 Person personToEdit = personDAO.getPersonById(5);
                 personToEdit.setAge(30);
-                personToEdit.setAdult(true);
+                personToEdit.setEmployed(true);
                 
                 if (personToEdit != null) {
                     try {
@@ -150,13 +150,13 @@ public class ViewController implements Initializable {
                     textFieldFirstName.clear();
                     textFieldLastName.clear();
                     textFieldAge.clear();
-                    choiceBoxAdult.setValue("No");
+                    choiceBoxEmployed.setValue("No");
                 } 
             }
         });
         
-        choiceBoxAdult.getItems().addAll("No", "Yes");
-        choiceBoxAdult.setValue("No");
+        choiceBoxEmployed.getItems().addAll("No", "Yes");
+        choiceBoxEmployed.setValue("No");
     }    
     private int getID() {
         List<Person> allPerson = personDAO.getAllPersons();
@@ -171,6 +171,10 @@ public class ViewController implements Initializable {
         }
         
         return ++maxID;
+    }
+    
+    private boolean processStringToBool(String item) {
+        return item.equals("Yes");
     }
 }
 

@@ -5,6 +5,8 @@
  */
 package entities;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,27 +26,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
-, @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id")
+    , @NamedQuery(name = "Person.findById", query = "SELECT p FROM Person p WHERE p.id = :id")
     , @NamedQuery(name = "Person.findByFirstName", query = "SELECT p FROM Person p WHERE p.firstName = :firstName")
     , @NamedQuery(name = "Person.findByLastName", query = "SELECT p FROM Person p WHERE p.lastName = :lastName")
     , @NamedQuery(name = "Person.findByAge", query = "SELECT p FROM Person p WHERE p.age = :age")
-    , @NamedQuery(name = "Person.findByAdult", query = "SELECT p FROM Person p WHERE p.adult = :adult")})
+    , @NamedQuery(name = "Person.findByEmployed", query = "SELECT p FROM Person p WHERE p.employed = :employed")})
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "First_Name")
+    @Column(name = "firstName")
     private String firstName;
-    @Column(name = "Last_Name")
+    @Column(name = "lastName")
     private String lastName;
-    @Column(name = "Age")
+    @Column(name = "age")
     private Integer age;
     @Basic(optional = false)
-    @Column(name = "Adult")
-    private boolean adult;
+    @Column(name = "employed")
+    private boolean employed;
 
     public Person() {
     }
@@ -53,9 +56,9 @@ public class Person implements Serializable {
         this.id = id;
     }
 
-    public Person(Integer id, boolean adult) {
+    public Person(Integer id, boolean employed) {
         this.id = id;
-        this.adult = adult;
+        this.employed = employed;
     }
 
     public Integer getId() {
@@ -90,12 +93,12 @@ public class Person implements Serializable {
         this.age = age;
     }
 
-    public boolean getAdult() {
-        return adult;
+    public boolean getEmployed() {
+        return employed;
     }
 
-    public void setAdult(boolean adult) {
-        this.adult = adult;
+    public void setEmployed(boolean employed) {
+        this.employed = employed;
     }
 
     @Override
