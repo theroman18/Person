@@ -26,6 +26,9 @@ import javafx.scene.control.TextField;
 import JpaController.exceptions.NonexistentEntityException;
 
 import JpaController.PersonJpaController;
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.adapter.JavaBeanStringProperty;
+import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.event.EventHandler;
 
 /**
@@ -137,9 +140,11 @@ public class ViewController implements Initializable {
         btnUpdate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Person personToEdit = personDAO.getPersonById(5);
-                personToEdit.setAge(30);
-                personToEdit.setEmployed(true);
+                Person personToEdit = personDAO.getPersonById(1);
+                personToEdit.setFirstName(textFieldFirstName.getText());
+                personToEdit.setLastName(textFieldLastName.getText());
+                personToEdit.setAge(Integer.parseInt(textFieldAge.getText()));
+                personToEdit.setEmployed(processStringToBool(choiceBoxEmployed.getSelectionModel().getSelectedItem()));
                 
                 if (personToEdit != null) {
                     try {
@@ -157,6 +162,23 @@ public class ViewController implements Initializable {
         
         choiceBoxEmployed.getItems().addAll("No", "Yes");
         choiceBoxEmployed.setValue("No");
+        
+        
+        Person bean = personDAO.getPersonById(1);
+        StringProperty firstNameProperty = null;
+        try {
+            firstNameProperty = JavaBeanStringPropertyBuilder.create().bean(bean).name("firstName").build();
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(ViewController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        firstNameProperty.addListener((observable, oldValue, newValue) -> {
+            System.out.println("observable = " + observable);
+            System.out.println("oldValue = " + oldValue);
+            System.out.println("newValue = " + newValue);
+        });
+        
+        bean.setFirstName("Ohmran");
     }    
     private int getID() {
         List<Person> allPerson = personDAO.getAllPersons();
@@ -169,7 +191,6 @@ public class ViewController implements Initializable {
                 }
             }
         }
-        
         return ++maxID;
     }
     

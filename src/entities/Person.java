@@ -5,9 +5,13 @@
  */
 package entities;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.io.Serializable;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Roman-Desktop
  */
 @Entity
+@Access(AccessType.PROPERTY)
 @Table(name = "Person")
 @XmlRootElement
 @NamedQueries({
@@ -34,71 +39,86 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
+    
     private Integer id;
-    @Column(name = "firstName")
     private String firstName;
-    @Column(name = "lastName")
     private String lastName;
-    @Column(name = "age")
     private Integer age;
-    @Basic(optional = false)
-    @Column(name = "employed")
     private boolean employed;
-
+    private final PropertyChangeSupport propertySupport;
+    
     public Person() {
+       this.propertySupport = new PropertyChangeSupport(this);
     }
 
     public Person(Integer id) {
         this.id = id;
+        this.propertySupport = new PropertyChangeSupport(this);
     }
 
     public Person(Integer id, boolean employed) {
         this.id = id;
         this.employed = employed;
+        this.propertySupport = new PropertyChangeSupport(this);
     }
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id")
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
+        Integer oldId = this.id;
         this.id = id;
+        propertySupport.firePropertyChange("id", oldId, this.id);
     }
 
+    @Column(name = "firstName")
     public String getFirstName() {
         return firstName;
     }
 
     public void setFirstName(String firstName) {
+        String oldFirstName = this.firstName;
         this.firstName = firstName;
+        propertySupport.firePropertyChange("firstName", oldFirstName, this.firstName);
     }
 
+    @Column(name = "lastName")
     public String getLastName() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
+        String oldLastName = this.lastName;
         this.lastName = lastName;
+        propertySupport.firePropertyChange("lastName", oldLastName, this.lastName);
     }
 
+    @Column(name = "age")
     public Integer getAge() {
         return age;
     }
 
     public void setAge(Integer age) {
+        Integer oldAge = this.age;
         this.age = age;
+        propertySupport.firePropertyChange("age", oldAge, this.age);
     }
 
+    @Basic(optional = false)
+    @Column(name = "employed")
     public boolean getEmployed() {
         return employed;
     }
 
     public void setEmployed(boolean employed) {
+        boolean oldEmployed = this.employed;
         this.employed = employed;
+        propertySupport.firePropertyChange("employed", oldEmployed, this.employed);
     }
 
     @Override
@@ -124,6 +144,10 @@ public class Person implements Serializable {
     @Override
     public String toString() {
         return "entities.Person[ id=" + id + " ]";
+    }
+    
+    public void addPropertyChangeListener(final PropertyChangeListener listener) {
+        propertySupport.addPropertyChangeListener(listener);
     }
     
 }
